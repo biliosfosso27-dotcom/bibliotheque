@@ -9,15 +9,14 @@ const FORM_VIDE = { titre: "", auteur: "", genre: "Roman", annee: "", lu: false 
 
 function FormulaireLivre({ livre, onAjouter, onEnregistrer, onAnnuler }) {
   // TODO étape 6 : valeur dérivée — sommes-nous en mode modification ?
-  let enModification = (livre !== null);
+  const enModification = (livre !== null);
+
 
   // TODO étape 6 : en mode modification, l'état de départ doit être le livre reçu
   //                (pense à convertir annee en texte pour le champ)
   const [form, setForm] = useState(FORM_VIDE);
   const [erreur, setErreur] = useState("");
-  if (enModification && form.titre === ""
-      && form.auteur=== "" && form.annee === "" && form.genre === "Roman" && form.lu === false
-  ) {
+  if (enModification && form.id !== livre.id) {
     setForm({ ...livre, annee: livre.annee.toString() });
   }
   // TODO étape 5 : un seul gestionnaire pour tous les champs, avec [name].
@@ -47,12 +46,11 @@ function FormulaireLivre({ livre, onAjouter, onEnregistrer, onAnnuler }) {
     if (enModification) {
       onEnregistrer({ ...form, id: livre.id, annee: Number(form.annee) });
       setForm(FORM_VIDE);
-      enModification = false;
     } else {
       onAjouter({ ...form, annee: Number(form.annee) });
     }
     setForm(FORM_VIDE);
-    enModification = false;
+
   }
 
   return (
